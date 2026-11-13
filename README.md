@@ -1,4 +1,4 @@
-# Rich T3 Code
+# T3 Code Presence
 
 Discord Rich Presence for [T3 Code](https://t3.codes). It shows the thread you have open, the model, the project, and what the agent is doing right now on your Discord profile. You choose what goes on each line.
 
@@ -49,7 +49,7 @@ rich-t3code init --client-id <application-id>
 From source:
 
 ```bash
-git clone https://github.com/YonCZ/rich-t3code.git
+git clone https://github.com/YonCZ/T3Code-Presence.git
 cd rich-t3code
 npm install
 npm run build
@@ -87,7 +87,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
   "pollIntervalMs": 2000,
   "prompting": { "enabled": true, "idleSeconds": 60, "frontmostOnly": true },
   "largeImage": {
-    "key": "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/rich-t3code/main/assets/t3code-icon.png&output=png&w=512&h=512",
+    "key": "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/T3Code-Presence/main/assets/t3code-icon.png&output=png&w=512&h=512",
     "text": "T3 Code"
   },
   "smallImage": { "enabled": false, "providerIcons": {} },

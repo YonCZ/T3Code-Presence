@@ -36,7 +36,7 @@ Options:
   -h, --help            Show this help
   --version             Show the version
 
-Docs: https://github.com/YonCZ/rich-t3code
+Docs: https://github.com/YonCZ/T3Code-Presence
 `;
 
 class CliError extends Error {

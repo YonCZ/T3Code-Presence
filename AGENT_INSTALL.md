@@ -28,7 +28,7 @@ Do not use an id from another project. Do not invent one.
 ## 3. Install from source
 
 ```bash
-git clone https://github.com/YonCZ/rich-t3code.git
+git clone https://github.com/YonCZ/T3Code-Presence.git
 cd rich-t3code
 npm install
 npm run build

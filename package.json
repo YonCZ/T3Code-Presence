@@ -14,13 +14,13 @@
     "presence",
     "coding-agents"
   ],
-  "homepage": "https://github.com/YonCZ/rich-t3code",
+  "homepage": "https://github.com/YonCZ/T3Code-Presence",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YonCZ/rich-t3code.git"
+    "url": "git+https://github.com/YonCZ/T3Code-Presence.git"
   },
   "bugs": {
-    "url": "https://github.com/YonCZ/rich-t3code/issues"
+    "url": "https://github.com/YonCZ/T3Code-Presence/issues"
   },
   "engines": {
     "node": ">=20.11"

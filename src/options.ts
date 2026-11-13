@@ -120,7 +120,7 @@ export const DEFAULT_PROMPTING_APPS = [
 ];
 
 export const T3CODE_ICON_URL =
-  "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/rich-t3code/main/assets/t3code-icon.png&output=png&w=512&h=512";
+  "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/T3Code-Presence/main/assets/t3code-icon.png&output=png&w=512&h=512";
 
 export const DEFAULT_OPTIONS: RichOptions = {
   clientId: "",
