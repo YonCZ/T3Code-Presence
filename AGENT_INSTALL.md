@@ -21,7 +21,7 @@ The application name appears as the "Playing …" headline. Ask the user to:
 1. Open <https://discord.com/developers/applications>.
 2. Create an application named **T3 Code** (or whatever headline they want).
 3. Copy the Application ID.
-4. In **Rich Presence → Art Assets**, upload a large image with the asset key `logo`.
+4. Optional: in **Rich Presence → Art Assets**, upload `assets/t3code-icon.png` with the asset key `logo`. The default config already uses the T3 icon through an image proxy, so this is only for an app-owned asset.
 
 Do not use an id from another project. Do not invent one.
 
@@ -42,7 +42,7 @@ Replace `<APPLICATION_ID>` with the id from step 2:
 node dist/cli.js init --client-id <APPLICATION_ID>
 ```
 
-The file is `~/.config/rich-t3code/config.json`. If the user wants a different layout, edit `details` and `state` using the field names in the README. Keep `clientId`.
+The file is `~/.config/rich-t3code/config.json`. The default first line shows the project and thread title. If the user does not want their work visible, set `"details": ["text:T3 Code"]` and keep `state`. If they want a different layout, edit `details` and `state` using the field names in the README. Keep `clientId`.
 
 ## 5. Verify
 

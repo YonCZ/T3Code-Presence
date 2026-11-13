@@ -10,6 +10,7 @@ export type {
 export {
   DEFAULT_OPTIONS,
   DEFAULT_PROMPTING_APPS,
+  T3CODE_ICON_URL,
   resolveOptions,
   type LineField,
   type PresenceStatus,

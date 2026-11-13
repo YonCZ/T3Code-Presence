@@ -17,10 +17,6 @@ export interface ActivityPayload {
 const MIN_UPDATE_INTERVAL_MS = 3_000;
 const MAX_RETRY_MS = 15_000;
 
-function isUrl(value: string): boolean {
-  return /^https?:\/\//i.test(value);
-}
-
 function payloadKey(payload: ActivityPayload): string {
   return JSON.stringify(payload);
 }
@@ -182,9 +178,6 @@ export class PresenceClient {
       this.updateTimer = null;
     }
 
-    const largeIsUrl = isUrl(payload.largeImage.key);
-    const smallIsUrl = payload.smallImage ? isUrl(payload.smallImage.key) : false;
-
     this.lastSent = key;
     this.lastSentAt = now;
     this.logger.debug("discord.activity", { details: payload.details, state: payload.state ?? null });
@@ -194,15 +187,14 @@ export class PresenceClient {
         details: payload.details,
         ...(payload.state ? { state: payload.state } : {}),
         ...(payload.startTimestamp ? { startTimestamp: payload.startTimestamp } : {}),
-        ...(largeIsUrl
-          ? { largeImageUrl: payload.largeImage.key }
-          : { largeImageKey: payload.largeImage.key }),
+        // Discord accepts an asset key or an https URL here and turns the URL
+        // into an mp:external asset. `largeImageUrl` only sets `large_url`,
+        // which the profile does not render, so always use the key field.
+        largeImageKey: payload.largeImage.key,
         largeImageText: payload.largeImage.text,
         ...(payload.smallImage
           ? {
-              ...(smallIsUrl
-                ? { smallImageUrl: payload.smallImage.key }
-                : { smallImageKey: payload.smallImage.key }),
+              smallImageKey: payload.smallImage.key,
               smallImageText: payload.smallImage.text,
             }
           : {}),

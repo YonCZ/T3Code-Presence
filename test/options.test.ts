@@ -4,12 +4,13 @@ import { DEFAULT_OPTIONS, resolveOptions } from "../src/options.js";
 
 test("defaults are stable", () => {
   const options = resolveOptions({});
-  assert.deepEqual(options.details, ["thread"]);
+  assert.deepEqual(options.details, ["project", "thread"]);
   assert.deepEqual(options.state, ["model", "status"]);
   assert.equal(options.separator, " \u00b7 ");
   assert.equal(options.timer.source, "activity");
   assert.equal(options.followFocusedThread, true);
   assert.equal(options.clientId, "");
+  assert.match(options.largeImage.key, /t3code-icon\.png/);
 });
 
 test("merges user values", () => {

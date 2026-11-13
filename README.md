@@ -35,7 +35,7 @@ The Discord application name is the "Playing …" headline, so make it say **T3 
 
 1. Open [discord.com/developers/applications](https://discord.com/developers/applications) and create an application.
 2. Copy the **Application ID**.
-3. Open **Rich Presence → Art Assets** and upload a large image with the asset key `logo`. The default config uses that key.
+3. Optional: open **Rich Presence → Art Assets** and upload [`assets/t3code-icon.png`](assets/t3code-icon.png) with the asset key `logo` if you want an app-owned image. The default config already uses the T3 Code icon from this repo through an image proxy, so the card has the mark without uploading anything.
 4. Optional: upload provider icons and map them under `smallImage.providerIcons`, or leave it empty and let the daemon use [models.dev](https://models.dev) logos through an image proxy.
 
 Then write the config:
@@ -78,7 +78,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 ```jsonc
 {
   "clientId": "123456789012345678",
-  "details": ["thread"],
+  "details": ["project", "thread"],
   "state": ["model", "status"],
   "separator": " · ",
   "timer": { "enabled": true, "source": "activity", "idleResetMinutes": 30 },
@@ -86,7 +86,10 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
   "followFocusedThread": true,
   "pollIntervalMs": 2000,
   "prompting": { "enabled": true, "idleSeconds": 60, "frontmostOnly": true },
-  "largeImage": { "key": "logo", "text": "T3 Code" },
+  "largeImage": {
+    "key": "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/rich-t3code/main/assets/t3code-icon.png&output=png&w=512&h=512",
+    "text": "T3 Code"
+  },
   "smallImage": { "enabled": false, "providerIcons": {} },
   "debug": false
 }
@@ -119,7 +122,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | Option | Default | Description |
 | --- | --- | --- |
 | `clientId` | — | Discord Application ID (required) |
-| `details` | `["thread"]` | fields on the first line |
+| `details` | `["project", "thread"]` | fields on the first line |
 | `state` | `["model", "status"]` | fields on the second line |
 | `separator` | `" · "` | joins non-empty fields |
 | `timer.enabled` | `true` | show Discord's elapsed timer |
@@ -135,7 +138,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | `prompting.idleSeconds` | `60` | recent input window |
 | `prompting.frontmostOnly` | `true` | require one of `prompting.apps` to be frontmost |
 | `prompting.apps` | T3 Code, terminals, browsers | frontmost app allow-list |
-| `largeImage.key` | `"logo"` | Discord asset key, or an `https://` URL |
+| `largeImage.key` | built-in T3 icon URL | Discord asset key, or an `https://` URL |
 | `largeImage.text` | `"T3 Code"` | hover text |
 | `smallImage.enabled` | `false` | show a provider icon |
 | `smallImage.providerIcons` | `{}` | asset keys or URLs by vendor/provider id |
@@ -173,6 +176,25 @@ Per-run timer, custom labels, no provider icon:
     "input": "Your answer"
   }
 }
+```
+
+Hide what you are working on. The project and thread title are on by default; replace both with a literal:
+
+```jsonc
+{
+  "details": ["text:T3 Code"],
+  "state": ["model", "status"]
+}
+```
+
+### Icon
+
+[`assets/t3code-icon.png`](assets/t3code-icon.png) is extracted from the T3 Code app icon. The default `largeImage.key` points at it through `images.weserv.nl`, so the card shows the T3 mark without uploading a Discord asset.
+
+If you prefer an app-owned image, upload that file under **Rich Presence → Art Assets** with the key `logo`, then set:
+
+```jsonc
+{ "largeImage": { "key": "logo", "text": "T3 Code" } }
 ```
 
 ### Environment variables

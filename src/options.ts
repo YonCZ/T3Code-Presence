@@ -119,9 +119,12 @@ export const DEFAULT_PROMPTING_APPS = [
   "Zen",
 ];
 
+export const T3CODE_ICON_URL =
+  "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/rich-t3code/main/assets/t3code-icon.png&output=png&w=512&h=512";
+
 export const DEFAULT_OPTIONS: RichOptions = {
   clientId: "",
-  details: ["thread"],
+  details: ["project", "thread"],
   state: ["model", "status"],
   separator: " \u00b7 ",
   status: {
@@ -148,7 +151,7 @@ export const DEFAULT_OPTIONS: RichOptions = {
     frontmostOnly: true,
     apps: DEFAULT_PROMPTING_APPS,
   },
-  largeImage: { key: "logo", text: "T3 Code" },
+  largeImage: { key: T3CODE_ICON_URL, text: "T3 Code" },
   smallImage: { enabled: false, providerIcons: {} },
   debug: false,
 };
