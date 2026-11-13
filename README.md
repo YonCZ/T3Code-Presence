@@ -4,8 +4,9 @@ Discord Rich Presence for [T3 Code](https://t3.codes). It shows the thread you h
 
 ```
 Playing T3 Code
-rich-t3code · Ship the Discord Rich Presence integration · Working · 2 agents
-DeepSeek V4.1 Flash · High
+rich-t3code · Ship the Discord Rich Presence integration
+DeepSeek V4.1 Flash · High · Working · 2 agents
+01:23 elapsed
 ```
 
 This is an independent project. It is not a fork of T3 Code, or of any other presence plugin. It reads T3 Code's local state read-only and talks to Discord over the local IPC socket.
@@ -77,8 +78,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 ```jsonc
 {
   "clientId": "123456789012345678",
-  "details": ["project", "thread", "status", "agents"],
-  "state": ["modelName", "variant"],
+  "details": ["project", "thread"],
+  "state": ["modelName", "variant", "status", "agents"],
   "separator": " · ",
   "timer": { "enabled": true, "source": "activity", "idleResetMinutes": 30 },
   "hideWhenIdleMinutes": 60,
@@ -122,8 +123,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | Option | Default | Description |
 | --- | --- | --- |
 | `clientId` | — | Discord Application ID (required) |
-| `details` | `["project", "thread", "status", "agents"]` | fields on the first line |
-| `state` | `["modelName", "variant"]` | fields on the second line |
+| `details` | `["project", "thread"]` | fields on the first line |
+| `state` | `["modelName", "variant", "status", "agents"]` | fields on the second line |
 | `separator` | `" · "` | joins non-empty fields |
 | `timer.enabled` | `true` | show Discord's elapsed timer |
 | `timer.source` | `"activity"` | `activity` keeps one session timer, `run` starts per agent run |
@@ -151,8 +152,8 @@ The default profile:
 
 ```jsonc
 {
-  "details": ["project", "thread", "status", "agents"],
-  "state": ["modelName", "variant"]
+  "details": ["project", "thread"],
+  "state": ["modelName", "variant", "status", "agents"]
 }
 ```
 
