@@ -4,9 +4,8 @@ Discord Rich Presence for [T3 Code](https://t3.codes). It shows the thread you h
 
 ```
 Playing T3 Code
-T3 Code · rich-t3code · Ship the Discord Rich Presence integration
-DeepSeek V4.1 Flash (High) · Working · 2 agents
-01:23 elapsed
+rich-t3code · Ship the Discord Rich Presence integration · Working · 2 agents
+DeepSeek V4.1 Flash · High
 ```
 
 This is an independent project. It is not a fork of T3 Code, or of any other presence plugin. It reads T3 Code's local state read-only and talks to Discord over the local IPC socket.
@@ -78,8 +77,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 ```jsonc
 {
   "clientId": "123456789012345678",
-  "details": ["text:T3 Code", "project", "thread"],
-  "state": ["modelNameVariant", "status", "agents"],
+  "details": ["project", "thread", "status", "agents"],
+  "state": ["modelName", "variant"],
   "separator": " · ",
   "timer": { "enabled": true, "source": "activity", "idleResetMinutes": 30 },
   "hideWhenIdleMinutes": 60,
@@ -123,8 +122,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | Option | Default | Description |
 | --- | --- | --- |
 | `clientId` | — | Discord Application ID (required) |
-| `details` | `["text:T3 Code", "project", "thread"]` | fields on the first line |
-| `state` | `["modelNameVariant", "status", "agents"]` | fields on the second line |
+| `details` | `["project", "thread", "status", "agents"]` | fields on the first line |
+| `state` | `["modelName", "variant"]` | fields on the second line |
 | `separator` | `" · "` | joins non-empty fields |
 | `timer.enabled` | `true` | show Discord's elapsed timer |
 | `timer.source` | `"activity"` | `activity` keeps one session timer, `run` starts per agent run |
@@ -152,8 +151,8 @@ The default profile:
 
 ```jsonc
 {
-  "details": ["text:T3 Code", "project", "thread"],
-  "state": ["modelNameVariant", "status", "agents"]
+  "details": ["project", "thread", "status", "agents"],
+  "state": ["modelName", "variant"]
 }
 ```
 
@@ -179,12 +178,12 @@ Per-run timer, custom labels, no provider icon:
 }
 ```
 
-Hide what you are working on. The project and thread title are on by default; replace both with a literal:
+Hide what you are working on. The project and thread title are on by default; remove both and keep only the state:
 
 ```jsonc
 {
-  "details": ["text:T3 Code"],
-  "state": ["model", "status"]
+  "details": ["status"],
+  "state": ["modelName", "variant"]
 }
 ```
 

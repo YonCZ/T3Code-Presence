@@ -118,8 +118,11 @@ test("model helpers", () => {
 test("renders the default profile", () => {
   const options = resolveOptions({});
   const rendered = renderPresence(view({ runningAgents: 2 }), options);
-  assert.equal(rendered.details, "T3 Code · rich-t3code · Ship the thing");
-  assert.equal(rendered.state, "DeepSeek V4.1 Flash (High) · Working · 2 agents");
+  assert.equal(
+    rendered.details,
+    "rich-t3code · Ship the thing · Working · 2 agents",
+  );
+  assert.equal(rendered.state, "DeepSeek V4.1 Flash · high");
 });
 
 test("truncates long lines by UTF-8 bytes", () => {

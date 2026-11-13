@@ -125,8 +125,8 @@ export const T3CODE_ICON_URL =
 
 export const DEFAULT_OPTIONS: RichOptions = {
   clientId: "",
-  details: ["text:T3 Code", "project", "thread"],
-  state: ["modelNameVariant", "status", "agents"],
+  details: ["project", "thread", "status", "agents"],
+  state: ["modelName", "variant"],
   separator: " \u00b7 ",
   status: {
     labels: {

@@ -4,8 +4,8 @@ import { DEFAULT_OPTIONS, resolveOptions } from "../src/options.js";
 
 test("defaults are stable", () => {
   const options = resolveOptions({});
-  assert.deepEqual(options.details, ["text:T3 Code", "project", "thread"]);
-  assert.deepEqual(options.state, ["modelNameVariant", "status", "agents"]);
+  assert.deepEqual(options.details, ["project", "thread", "status", "agents"]);
+  assert.deepEqual(options.state, ["modelName", "variant"]);
   assert.equal(options.separator, " \u00b7 ");
   assert.equal(options.timer.source, "activity");
   assert.equal(options.followFocusedThread, true);
