@@ -4,8 +4,8 @@ import { DEFAULT_OPTIONS, resolveOptions } from "../src/options.js";
 
 test("defaults are stable", () => {
   const options = resolveOptions({});
-  assert.deepEqual(options.details, ["project", "thread"]);
-  assert.deepEqual(options.state, ["modelName", "variant", "status", "agents"]);
+  assert.deepEqual(options.details, ["thread"]);
+  assert.deepEqual(options.state, ["modelNameVariant", "status"]);
   assert.equal(options.separator, " \u00b7 ");
   assert.equal(options.timer.source, "activity");
   assert.equal(options.followFocusedThread, true);

@@ -4,8 +4,8 @@ Discord Rich Presence for [T3 Code](https://t3.codes). It shows the thread you h
 
 ```
 Playing T3 Code
-rich-t3code · Ship the Discord Rich Presence integration
-DeepSeek V4.1 Flash · High · Working · 2 agents
+Ship the Discord Rich Presence integration
+DeepSeek V4.1 Flash (High) · Working
 01:23 elapsed
 ```
 
@@ -78,8 +78,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 ```jsonc
 {
   "clientId": "123456789012345678",
-  "details": ["project", "thread"],
-  "state": ["modelName", "variant", "status", "agents"],
+  "details": ["thread"],
+  "state": ["modelNameVariant", "status"],
   "separator": " · ",
   "timer": { "enabled": true, "source": "activity", "idleResetMinutes": 30 },
   "hideWhenIdleMinutes": 60,
@@ -123,8 +123,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | Option | Default | Description |
 | --- | --- | --- |
 | `clientId` | — | Discord Application ID (required) |
-| `details` | `["project", "thread"]` | fields on the first line |
-| `state` | `["modelName", "variant", "status", "agents"]` | fields on the second line |
+| `details` | `["thread"]` | fields on the first line |
+| `state` | `["modelNameVariant", "status"]` | fields on the second line |
 | `separator` | `" · "` | joins non-empty fields |
 | `timer.enabled` | `true` | show Discord's elapsed timer |
 | `timer.source` | `"activity"` | `activity` keeps one session timer, `run` starts per agent run |
@@ -152,8 +152,8 @@ The default profile:
 
 ```jsonc
 {
-  "details": ["project", "thread"],
-  "state": ["modelName", "variant", "status", "agents"]
+  "details": ["thread"],
+  "state": ["modelNameVariant", "status"]
 }
 ```
 
@@ -179,12 +179,12 @@ Per-run timer, custom labels, no provider icon:
 }
 ```
 
-Hide what you are working on. The project and thread title are on by default; remove both and keep only the state:
+Hide what you are working on. The thread title is on by default; remove it and keep only the status and model:
 
 ```jsonc
 {
   "details": ["status"],
-  "state": ["modelName", "variant"]
+  "state": ["modelNameVariant"]
 }
 ```
 

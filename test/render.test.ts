@@ -120,9 +120,9 @@ test("renders the default profile", () => {
   const rendered = renderPresence(view({ runningAgents: 2 }), options);
   assert.equal(
     rendered.details,
-    "rich-t3code · Ship the thing",
+    "Ship the thing",
   );
-  assert.equal(rendered.state, "DeepSeek V4.1 Flash · high · Working · 2 agents");
+  assert.equal(rendered.state, "DeepSeek V4.1 Flash (High) · Working");
 });
 
 test("truncates long lines by UTF-8 bytes", () => {
