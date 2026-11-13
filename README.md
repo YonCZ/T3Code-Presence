@@ -67,6 +67,8 @@ node dist/cli.js uninstall
 
 On macOS, approve the background item if the system asks. The service writes its stdout and stderr to `~/.local/state/rich-t3code/`.
 
+The login service points at this checkout and the Node binary that installed it. Keep the folder where it is; if you move it or switch Node versions, run `install` again.
+
 With an AI agent: point it at [AGENT_INSTALL.md](AGENT_INSTALL.md).
 
 ## Configuration
@@ -227,6 +229,8 @@ The reader targets T3 Code 0.1's orchestration v2 tables. It checks for the tabl
 **The provider icon is missing.** Discord needs either an uploaded asset key or a reachable image URL. Set `smallImage.enabled` and add `smallImage.providerIcons` for your provider.
 
 **The card stays after quitting T3 Code.** Give Discord a few seconds to time out the activity, or run `rich-t3code start` once and stop it with Ctrl+C; the daemon clears the card on a clean exit.
+
+**The service is installed but nothing happens.** Check `~/.local/state/rich-t3code/rich-t3code.log` and `rich-t3code.err.log`. A `discord.login.failed` line means the socket was busy or Discord was restarting; the daemon retries. On macOS, also check `launchctl print gui/$(id -u)/com.yoncz.rich-t3code`.
 
 **Multiple machines.** Discord shows the activity for the machine where the daemon runs. On a remote T3 Code server, run the daemon on that machine and point it at the same `T3CODE_HOME`.
 
