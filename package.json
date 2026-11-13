@@ -1,0 +1,68 @@
+{
+  "name": "rich-t3code",
+  "version": "0.1.0",
+  "description": "Discord Rich Presence for T3 Code — your open thread, model, project, and live agent status on your Discord profile.",
+  "type": "module",
+  "license": "MIT",
+  "author": "YonCZ",
+  "keywords": [
+    "t3code",
+    "t3-code",
+    "discord",
+    "discord-rpc",
+    "rich-presence",
+    "presence",
+    "coding-agents"
+  ],
+  "homepage": "https://github.com/YonCZ/rich-t3code",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YonCZ/rich-t3code.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YonCZ/rich-t3code/issues"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "rich-t3code": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "AGENT_INSTALL.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/*.test.ts",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js start",
+    "preview": "node dist/cli.js preview",
+    "prepack": "npm run build",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@xhayper/discord-rpc": "^1.5.1",
+    "better-sqlite3": "^13.1.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^22.15.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.8.0"
+  }
+}
