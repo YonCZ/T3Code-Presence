@@ -177,7 +177,8 @@ function load(flags: Flags) {
 function loggerFor(options: RichOptions, verbose: boolean) {
   return createLogger({
     verbose,
-    filePath: options.debug ? join(stateDir(), "rich-t3code.log") : null,
+    filePath: join(stateDir(), "rich-t3code.log"),
+    debug: options.debug,
   });
 }
 

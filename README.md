@@ -137,7 +137,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | `largeImage.text` | `"T3 Code"` | hover text |
 | `smallImage.enabled` | `false` | show a provider icon |
 | `smallImage.providerIcons` | `{}` | asset keys or URLs by vendor/provider id |
-| `debug` | `false` | write JSON logs to `~/.local/state/rich-t3code/rich-t3code.log` |
+| `debug` | `false` | add polling and Discord activity details to `~/.local/state/rich-t3code/rich-t3code.log` |
 | `t3Home` | `~/.t3` | T3 Code data directory |
 
 ### Examples

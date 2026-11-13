@@ -18,6 +18,8 @@ export interface LoggerOptions {
   verbose?: boolean;
   /** Write a JSON-lines file. */
   filePath?: string | null;
+  /** Write debug lines to the file. Info and errors are always written. */
+  debug?: boolean;
   /** Print warnings and errors to stderr. */
   stderr?: boolean;
 }
@@ -44,11 +46,13 @@ function writeLine(
 export function createLogger(options: LoggerOptions = {}): Logger {
   const filePath = options.filePath ?? null;
   const verbose = options.verbose ?? false;
+  const debugEnabled = options.debug ?? false;
   const stderr = options.stderr ?? true;
 
   return {
     filePath,
     debug(message, data) {
+      if (!debugEnabled) return;
       writeLine(filePath, "debug", message, data);
       if (verbose) process.stderr.write(`[rich-t3code] ${message}${data ? ` ${JSON.stringify(data)}` : ""}\n`);
     },

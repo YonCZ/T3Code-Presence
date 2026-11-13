@@ -72,7 +72,7 @@ export class PresenceClient {
       });
 
       client.on("disconnected", () => {
-        this.logger.debug("discord.disconnected");
+        this.logger.info("discord.disconnected");
         this.ready = false;
         this.lastSent = null;
         this.client = null;
@@ -80,7 +80,7 @@ export class PresenceClient {
       });
 
       void client.login().catch((error: unknown) => {
-        this.logger.debug("discord.login.failed", {
+        this.logger.info("discord.login.failed", {
           error: String(error),
           retryInMs: this.retryDelay,
         });
@@ -94,7 +94,7 @@ export class PresenceClient {
         this.scheduleRetry();
       });
     } catch (error) {
-      this.logger.debug("discord.client.failed", { error: String(error) });
+      this.logger.info("discord.client.failed", { error: String(error) });
       this.client = null;
       this.scheduleRetry();
     }
@@ -123,7 +123,7 @@ export class PresenceClient {
     }
     if (!this.connected) return;
     void this.client?.user?.clearActivity().catch((error: unknown) => {
-      this.logger.debug("discord.clear.failed", { error: String(error) });
+      this.logger.info("discord.clear.failed", { error: String(error) });
     });
   }
 
@@ -209,7 +209,7 @@ export class PresenceClient {
       })
       .catch((error: unknown) => {
         this.lastSent = null;
-        this.logger.debug("discord.activity.failed", { error: String(error) });
+        this.logger.info("discord.activity.failed", { error: String(error) });
       });
   }
 }
