@@ -4,6 +4,7 @@ export type LineField =
   | "project"
   | "model"
   | "modelName"
+  | "modelNameVariant"
   | "provider"
   | "vendor"
   | "variant"
@@ -124,8 +125,8 @@ export const T3CODE_ICON_URL =
 
 export const DEFAULT_OPTIONS: RichOptions = {
   clientId: "",
-  details: ["project", "thread"],
-  state: ["model", "status"],
+  details: ["text:T3 Code", "project", "thread"],
+  state: ["modelNameVariant", "status", "agents"],
   separator: " \u00b7 ",
   status: {
     labels: {

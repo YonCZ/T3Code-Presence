@@ -3,8 +3,10 @@ import test from "node:test";
 import { resolveOptions } from "../src/options.js";
 import {
   modelIdWithoutVendor,
+  modelNameWithVariant,
   pendingLabel,
   prettyModelId,
+  prettyVariant,
   renderPresence,
   statusLabel,
   truncateUtf8,
@@ -104,6 +106,20 @@ test("model helpers", () => {
   assert.equal(prettyModelId("openai/gpt-5.1-codex-max"), "GPT 5.1 Codex Max");
   assert.equal(modelIdWithoutVendor("einfra/deepseek-v4.1-flash"), "deepseek-v4.1-flash");
   assert.equal(prettyModelId(null), "");
+  assert.equal(prettyVariant("high"), "High");
+  assert.equal(prettyVariant(null), "");
+  assert.equal(
+    modelNameWithVariant("einfra/deepseek-v4.1-flash", "high"),
+    "DeepSeek V4.1 Flash (High)",
+  );
+  assert.equal(modelNameWithVariant("einfra/deepseek-v4.1-flash", null), "DeepSeek V4.1 Flash");
+});
+
+test("renders the default profile", () => {
+  const options = resolveOptions({});
+  const rendered = renderPresence(view({ runningAgents: 2 }), options);
+  assert.equal(rendered.details, "T3 Code · rich-t3code · Ship the thing");
+  assert.equal(rendered.state, "DeepSeek V4.1 Flash (High) · Working · 2 agents");
 });
 
 test("truncates long lines by UTF-8 bytes", () => {

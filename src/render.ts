@@ -74,6 +74,18 @@ export function modelIdWithoutVendor(model: string | null): string {
   return model.includes("/") ? (model.split("/").pop() ?? model) : model;
 }
 
+export function prettyVariant(variant: string | null): string {
+  if (!variant) return "";
+  return variant.charAt(0).toUpperCase() + variant.slice(1);
+}
+
+export function modelNameWithVariant(model: string | null, variant: string | null): string {
+  const name = prettyModelId(model);
+  if (!name) return "";
+  const label = prettyVariant(variant);
+  return label ? `${name} (${label})` : name;
+}
+
 function projectName(view: CardView): string {
   if (view.project) {
     if (view.project.title.trim().length > 0) return view.project.title;
@@ -112,6 +124,8 @@ function renderField(field: LineField, view: CardView, options: RichOptions): st
       return modelIdWithoutVendor(view.model);
     case "modelName":
       return prettyModelId(view.model);
+    case "modelNameVariant":
+      return modelNameWithVariant(view.model, view.variant);
     case "provider":
       return view.provider ?? "";
     case "vendor":

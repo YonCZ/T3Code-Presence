@@ -36,7 +36,14 @@ export {
   variantFromOptions,
 } from "./t3/snapshot.js";
 export { chooseThread, deriveCard, deriveThreadStatus, threadNeedsAttention } from "./derive.js";
-export { prettyModelId, renderPresence, statusLabel, truncateUtf8 } from "./render.js";
+export {
+  modelNameWithVariant,
+  prettyModelId,
+  prettyVariant,
+  renderPresence,
+  statusLabel,
+  truncateUtf8,
+} from "./render.js";
 export { buildActivity, modelsDevIconUrl, providerIcon } from "./activity.js";
 export { PresenceClient, type ActivityPayload } from "./presence/client.js";
 export { runDaemon, startDaemon, type DaemonSample, type RunDaemonOptions } from "./daemon.js";

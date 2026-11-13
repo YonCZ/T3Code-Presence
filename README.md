@@ -4,8 +4,8 @@ Discord Rich Presence for [T3 Code](https://t3.codes). It shows the thread you h
 
 ```
 Playing T3 Code
-Ship the Discord Rich Presence integration
-deepseek-v4.1-flash · Working
+T3 Code · rich-t3code · Ship the Discord Rich Presence integration
+DeepSeek V4.1 Flash (High) · Working · 2 agents
 01:23 elapsed
 ```
 
@@ -78,8 +78,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 ```jsonc
 {
   "clientId": "123456789012345678",
-  "details": ["project", "thread"],
-  "state": ["model", "status"],
+  "details": ["text:T3 Code", "project", "thread"],
+  "state": ["modelNameVariant", "status", "agents"],
   "separator": " · ",
   "timer": { "enabled": true, "source": "activity", "idleResetMinutes": 30 },
   "hideWhenIdleMinutes": 60,
@@ -105,6 +105,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | `project` | `rich-t3code` | T3 Code project title, falling back to the folder name |
 | `model` | `deepseek-v4.1-flash` | model id without the vendor prefix |
 | `modelName` | `DeepSeek V4.1 Flash` | prettified model id |
+| `modelNameVariant` | `DeepSeek V4.1 Flash (High)` | prettified model id with the variant |
 | `provider` | `opencode` | the agent harness running the thread |
 | `vendor` | `einfra` | model vendor from the model id |
 | `variant` | `high` | model variant / reasoning level |
@@ -122,8 +123,8 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 | Option | Default | Description |
 | --- | --- | --- |
 | `clientId` | — | Discord Application ID (required) |
-| `details` | `["project", "thread"]` | fields on the first line |
-| `state` | `["model", "status"]` | fields on the second line |
+| `details` | `["text:T3 Code", "project", "thread"]` | fields on the first line |
+| `state` | `["modelNameVariant", "status", "agents"]` | fields on the second line |
 | `separator` | `" · "` | joins non-empty fields |
 | `timer.enabled` | `true` | show Discord's elapsed timer |
 | `timer.source` | `"activity"` | `activity` keeps one session timer, `run` starts per agent run |
@@ -147,12 +148,12 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 
 ### Examples
 
-Everything on two lines:
+The default profile:
 
 ```jsonc
 {
-  "details": ["thread"],
-  "state": ["agents", "model", "status"]
+  "details": ["text:T3 Code", "project", "thread"],
+  "state": ["modelNameVariant", "status", "agents"]
 }
 ```
 

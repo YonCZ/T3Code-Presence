@@ -42,7 +42,7 @@ Replace `<APPLICATION_ID>` with the id from step 2:
 node dist/cli.js init --client-id <APPLICATION_ID>
 ```
 
-The file is `~/.config/rich-t3code/config.json`. The default first line shows the project and thread title. If the user does not want their work visible, set `"details": ["text:T3 Code"]` and keep `state`. If they want a different layout, edit `details` and `state` using the field names in the README. Keep `clientId`.
+The file is `~/.config/rich-t3code/config.json`. The default first line is `["text:T3 Code", "project", "thread"]`; the second is `["modelNameVariant", "status", "agents"]`. If the user does not want their work visible, set `"details": ["text:T3 Code"]` and keep `state`. If they want a different layout, edit `details` and `state` using the field names in the README. Keep `clientId`.
 
 ## 5. Verify
 
