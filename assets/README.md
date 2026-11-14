@@ -7,7 +7,7 @@ These files come from the T3 Code desktop app's `icon.icns`. The card uses them 
 | `t3code-icon.png` | 512x512 | Discord Art Asset with the key `logo` |
 | `t3code-icon-128.png` | 128x128 | Small icon or docs |
 
-T3 Code is MIT licensed by T3 Tools Inc. This project is independent and is not affiliated with T3 Tools. If the T3 Code icon changes, extract it again from the installed app:
+T3 Code is MIT licensed by T3 Tools Inc. If the T3 Code icon changes, extract it again from the installed app:
 
 ```bash
 iconutil -c iconset "/Applications/T3 Code.app/Contents/Resources/icon.icns" -o /tmp/t3code.iconset
