@@ -92,7 +92,7 @@ If you upload provider icons, map them under `smallImage.providerIcons`. Otherwi
 
 The config file is `~/.config/rich-t3code/config.json`, or `$XDG_CONFIG_HOME/rich-t3code/config.json`. Use `--config <path>` to read another file.
 
-```jsonc
+```json
 {
   "clientId": "1570933832012791858",
   "details": ["thread"],
@@ -169,7 +169,7 @@ The shared app is the default. Replace `clientId` if you created your own app.
 
 The default profile:
 
-```jsonc
+```json
 {
   "details": ["thread"],
   "state": ["modelNameVariant", "status"]
@@ -178,7 +178,7 @@ The default profile:
 
 Show the current command and the project instead of the thread title:
 
-```jsonc
+```json
 {
   "details": ["project"],
   "state": ["tool", "status"]
@@ -187,7 +187,7 @@ Show the current command and the project instead of the thread title:
 
 Use a timer per run and rename the states:
 
-```jsonc
+```json
 {
   "timer": { "source": "run" },
   "status": {
@@ -200,7 +200,7 @@ Use a timer per run and rename the states:
 
 Hide the thread title and show only the status and model:
 
-```jsonc
+```json
 {
   "details": ["status"],
   "state": ["modelNameVariant"]
@@ -213,7 +213,7 @@ Hide the thread title and show only the status and model:
 
 If you want an app-owned image, upload that file under Rich Presence, then Art Assets, with the key `logo`, and set:
 
-```jsonc
+```json
 { "largeImage": { "key": "logo", "text": "T3 Code" } }
 ```
 
