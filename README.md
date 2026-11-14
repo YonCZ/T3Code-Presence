@@ -94,7 +94,7 @@ The config file is `~/.config/rich-t3code/config.json`, or `$XDG_CONFIG_HOME/ric
 
 ```jsonc
 {
-  "clientId": "1570933832012791858", // shared app; replace with your own
+  "clientId": "1570933832012791858",
   "details": ["thread"],
   "state": ["modelNameVariant", "status"],
   "separator": " · ",
@@ -111,6 +111,8 @@ The config file is `~/.config/rich-t3code/config.json`, or `$XDG_CONFIG_HOME/ric
   "debug": false
 }
 ```
+
+The shared app is the default. Replace `clientId` if you created your own app.
 
 `details` is the first line and `state` is the second. Fields render in order. The daemon skips empty fields. Discord limits each line to 128 bytes.
 
