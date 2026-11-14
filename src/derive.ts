@@ -35,8 +35,8 @@ function byRecency(a: T3Thread, b: T3Thread): number {
 }
 
 /**
- * Pick the thread the card follows:
- * 1. a thread that needs an approval or an answer, so it surfaces even in the background;
+ * Pick the thread the card shows:
+ * 1. a thread that needs an approval or an answer, so it appears even in the background;
  * 2. the thread open in the T3 Code window;
  * 3. the most recently updated running thread;
  * 4. the most recently updated thread.

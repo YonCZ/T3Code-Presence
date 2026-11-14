@@ -4,8 +4,8 @@
 #   curl -fsSL https://raw.githubusercontent.com/YonCZ/T3Code-Presence/main/install.sh | bash
 #
 # Overrides:
-#   T3CODE_PRESENCE_DIR        checkout directory (default: ~/.local/share/t3code-presence)
-#   T3CODE_PRESENCE_REPO       git remote (default: the public GitHub repo)
+#   T3CODE_PRESENCE_DIR        checkout directory. Default: ~/.local/share/t3code-presence
+#   T3CODE_PRESENCE_REPO       git remote. Default: the public GitHub repo
 #   T3CODE_PRESENCE_NO_SERVICE set to 1 to build without installing the login service
 set -euo pipefail
 
@@ -13,13 +13,13 @@ REPO_URL="${T3CODE_PRESENCE_REPO:-https://github.com/YonCZ/T3Code-Presence.git}"
 INSTALL_DIR="${T3CODE_PRESENCE_DIR:-$HOME/.local/share/t3code-presence}"
 SKIP_SERVICE="${T3CODE_PRESENCE_NO_SERVICE:-0}"
 
-info() { printf '==> %s\n' "$*"; }
-fail() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
+info() { printf 'info: %s\n' "$*"; }
+fail() { printf 'error: %s\n' "$*" >&2; exit 1; }
 
 case "$(uname -s)" in
   Darwin | Linux) ;;
   *)
-    fail "Automatic install supports macOS and Linux. On Windows, clone the repo, run npm install and npm run build, then start 'node dist/cli.js start' at login with Task Scheduler."
+    fail "Automatic install supports macOS and Linux. On Windows, clone the repo, run npm install and npm run build, then add 'node dist/cli.js start' to Task Scheduler so it runs at login."
     ;;
 esac
 
@@ -30,7 +30,7 @@ command -v npm >/dev/null 2>&1 || fail "npm is required."
 node -e '
 const [major, minor] = process.versions.node.split(".").map(Number);
 if (major < 20 || (major === 20 && minor < 11)) process.exit(1);
-' || fail "Node.js 20.11 or newer is required (found $(node --version))."
+' || fail "Node.js 20.11 or newer is required. Found $(node --version)."
 
 if [ -d "$INSTALL_DIR/.git" ]; then
   info "Updating $INSTALL_DIR"
@@ -56,7 +56,7 @@ info "Building"
 npm run build
 
 if [ "$SKIP_SERVICE" = "1" ]; then
-  info "Build complete at $INSTALL_DIR (service install skipped)"
+  info "Build complete at $INSTALL_DIR. The service install was skipped."
   exit 0
 fi
 
@@ -75,5 +75,5 @@ node dist/cli.js install
 
 info "Checking the install"
 node dist/cli.js status
-info "Done. Logs: $HOME/.local/state/rich-t3code/"
-info "Commands: ${BIN_DIR}/rich-t3code status | uninstall"
+info "Done. Logs are in $HOME/.local/state/rich-t3code/"
+info "Commands: ${BIN_DIR}/rich-t3code status, or ${BIN_DIR}/rich-t3code uninstall"

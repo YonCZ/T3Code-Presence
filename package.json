@@ -1,7 +1,7 @@
 {
   "name": "rich-t3code",
   "version": "0.1.0",
-  "description": "Discord Rich Presence for T3 Code — your open thread, model, project, and live agent status on your Discord profile.",
+  "description": "Discord Rich Presence for T3 Code. Shows your open thread, model, project, and live agent status on your Discord profile.",
   "type": "module",
   "license": "MIT",
   "author": "YonCZ",

@@ -72,13 +72,13 @@ export async function runDaemon(run: RunDaemonOptions): Promise<void> {
 
   if (!dryRun && options.clientId.length === 0) {
     throw new Error(
-      "No Discord application id configured. Set clientId in the config file or RICH_T3CODE_CLIENT_ID.",
+      "No Discord Application ID configured. Set clientId in the config file or RICH_T3CODE_CLIENT_ID.",
     );
   }
 
   const lock = new InstanceLock(run.statePath);
   if (run.lock !== false && !lock.acquire()) {
-    throw new Error(`Another rich-t3code instance is already running (lock: ${lock.path}).`);
+    throw new Error(`Another rich-t3code instance is already running. Lock: ${lock.path}.`);
   }
 
   const presence = dryRun ? null : new PresenceClient({ clientId: options.clientId, logger });

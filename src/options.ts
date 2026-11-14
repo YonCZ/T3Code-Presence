@@ -62,12 +62,12 @@ export interface ImageOptions {
 
 export interface SmallImageOptions {
   enabled: boolean;
-  /** Discord asset keys or URLs by provider id. */
+  /** Discord asset keys or URLs by provider ID. */
   providerIcons: Record<string, string>;
 }
 
 export interface RichOptions {
-  /** Discord application id. Required for the RPC handshake. */
+  /** Discord Application ID. Required for the RPC handshake. */
   clientId: string;
   /** First line fields, in order. */
   details: LineField[];
@@ -78,7 +78,7 @@ export interface RichOptions {
   timer: TimerOptions;
   /** Hide the card after this many minutes without a run or a visit. 0 keeps it. */
   hideWhenIdleMinutes: number;
-  /** Follow the thread open in the T3 Code window instead of the busiest one. */
+  /** Show the thread open in the T3 Code window instead of the busiest one. */
   followFocusedThread: boolean;
   /** How often the T3 Code database is sampled. */
   pollIntervalMs: number;

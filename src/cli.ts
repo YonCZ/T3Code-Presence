@@ -14,21 +14,21 @@ import { readT3Snapshot } from "./t3/snapshot.js";
 import type { CardView, T3Snapshot, T3Thread } from "./types.js";
 import { buildActivity } from "./activity.js";
 
-const HELP = `rich-t3code — Discord Rich Presence for T3 Code
+const HELP = `rich-t3code: Discord Rich Presence for T3 Code
 
 Usage:
-  rich-t3code [start] [options]      Start the presence daemon (foreground)
+  rich-t3code [start] [options]      Start the presence daemon in the foreground
   rich-t3code status [--json]        Show the current card and T3 Code state
   rich-t3code preview [--seconds N]  Show a sample card in Discord
   rich-t3code init [--client-id ID]  Write a default config file
   rich-t3code doctor                 Check config, Discord IPC and T3 Code state
-  rich-t3code install                Install a login service (launchd/systemd)
+  rich-t3code install                Install a launchd or systemd login service
   rich-t3code uninstall              Remove the login service
 
 Options:
-  --config <path>       Config file (default: ${join(configDir(), "config.json")})
-  --client-id <id>      Discord application id
-  --t3-home <path>      T3 Code data directory (default: $T3CODE_HOME or ~/.t3)
+  --config <path>       Config file. Default: ${join(configDir(), "config.json")}
+  --client-id <id>      Discord Application ID
+  --t3-home <path>      T3 Code data directory. Default: $T3CODE_HOME or ~/.t3
   --dry-run             Print the card without connecting to Discord
   --verbose             Log polling details to stderr
   --json                Machine-readable output for status/dry-run
@@ -186,10 +186,10 @@ function requireClientId(options: RichOptions): void {
   if (options.clientId.length > 0) return;
   throw new CliError(
     [
-      "No Discord application id configured.",
+      "No Discord Application ID is configured.",
       "",
-      "Create an application at https://discord.com/developers/applications and upload",
-      "your large image with the asset key `logo` (Rich Presence -> Art Assets).",
+      "Create an application at https://discord.com/developers/applications",
+      "and add a large image with the asset key `logo` under Rich Presence, then Art Assets.",
       "Then do one of these:",
       "",
       "  rich-t3code init --client-id <application-id>",
@@ -269,7 +269,7 @@ function cmdStart(flags: Flags): Promise<void> {
       ? ` [hidden: ${sample.hiddenReason ?? "unknown"}]`
       : ` [${sample.view.status}]`;
     const line = [sample.rendered.details, sample.rendered.state].filter(Boolean).join(" | ");
-    process.stdout.write(`${line || "(no card)"}${suffix}\n`);
+    process.stdout.write(`${line || "no card"}${suffix}\n`);
   };
 
   return runDaemon({
@@ -321,29 +321,29 @@ function cmdStatus(flags: Flags): void {
 
   const lines: string[] = [];
   lines.push(`rich-t3code ${packageVersion()}`);
-  lines.push(`config        ${loaded.path}${loaded.exists ? "" : " (not created)"}`);
-  lines.push(`discord id    ${options.clientId || "(not set)"}`);
+  lines.push(`config        ${loaded.path}${loaded.exists ? "" : ". Not created"}`);
+  lines.push(`Discord ID    ${options.clientId || "not set"}`);
   lines.push(`T3 home       ${t3Home}`);
   lines.push(
     `T3 server     ${
       snapshot.server.running
-        ? `running (pid ${snapshot.server.pid}, ${snapshot.server.version ?? "unknown version"}, port ${snapshot.server.port ?? "?"})`
+        ? `running, pid ${snapshot.server.pid}, ${snapshot.server.version ?? "unknown version"}, port ${snapshot.server.port ?? "?"}`
         : "not running"
     }`,
   );
   lines.push(
     `database      ${
-      snapshot.available ? snapshot.dbPath : `${snapshot.dbPath} (${snapshot.error ?? "unreadable"})`
+      snapshot.available ? snapshot.dbPath : `${snapshot.dbPath}. ${snapshot.error ?? "Unreadable."}`
     }`,
   );
   lines.push(
     `threads       ${snapshot.threads.length} total · ${activeThreads(snapshot)} running · ${snapshot.threads.reduce((sum, thread) => sum + thread.pendingApprovals + thread.pendingUserInputs, 0)} pending`,
   );
   const focused = snapshot.threads.find((thread) => thread.id === snapshot.focusedThreadId);
-  lines.push(`focused       ${focused?.title ?? "(none)"}`);
+  lines.push(`focused       ${focused?.title ?? "none"}`);
   lines.push(`card          ${card.details}${card.state ? ` | ${card.state}` : ""}`);
-  lines.push(`Discord IPC   ${findDiscordIpc() ?? `not found (expected ${discordSocketHint()})`}`);
-  lines.push(`service       ${service.installed ? `installed (${service.path})` : "not installed"}`);
+  lines.push(`Discord IPC   ${findDiscordIpc() ?? `not found. Expected ${discordSocketHint()}`}`);
+  lines.push(`service       ${service.installed ? `installed at ${service.path}` : "not installed"}`);
   process.stdout.write(`${lines.join("\n")}\n`);
 }
 
@@ -447,7 +447,7 @@ async function cmdPreview(flags: Flags): Promise<void> {
 
   client.update(activity);
   process.stderr.write(
-    `Showing: ${rendered.details}${rendered.state ? ` | ${rendered.state}` : ""}\nClearing in ${seconds}s…\n`,
+    `Showing: ${rendered.details}${rendered.state ? ` | ${rendered.state}` : ""}\nClearing in ${seconds}s...\n`,
   );
   await new Promise((resolve) => setTimeout(resolve, seconds * 1_000));
   client.clear();
@@ -465,8 +465,8 @@ function cmdInit(flags: Flags): void {
   process.stdout.write(`Wrote ${result.path}\n`);
   if (!clientId) {
     process.stdout.write(
-      "\nNext: create a Discord application at https://discord.com/developers/applications\n" +
-        "and put its Application ID in `clientId` in that file (or run `rich-t3code init --force --client-id <id>`).\n",
+      "\nThe config uses the shared T3 Code Discord app.\n" +
+        "To use your own app, run `rich-t3code init --force --client-id <id>`.\n",
     );
   }
 }
@@ -477,7 +477,7 @@ function cmdDoctor(flags: Flags): void {
     checks.push({ ok, fatal, label, detail });
 
   const nodeMajor = Number(process.versions.node.split(".")[0] ?? 0);
-  add(nodeMajor >= 20, "Node.js", `v${process.versions.node} (need 20.11+)`, true);
+  add(nodeMajor >= 20, "Node.js", `v${process.versions.node}. Need 20.11 or newer.`, true);
 
   let options: RichOptions = resolveOptions({});
   let configPath = "";
@@ -485,15 +485,15 @@ function cmdDoctor(flags: Flags): void {
     const loaded = load(flags);
     options = loaded.options;
     configPath = loaded.path;
-    add(true, "Config", `${loaded.path}${loaded.exists ? "" : " (missing, using defaults)"}`);
+    add(true, "Config", `${loaded.path}${loaded.exists ? "" : ". Missing, so using defaults."}`);
   } catch (error) {
     add(false, "Config", String(error), true);
   }
 
-  add(options.clientId.length > 0, "Discord app id", options.clientId || "not set", true);
+  add(options.clientId.length > 0, "Discord app ID", options.clientId || "not set", true);
 
   const ipc = findDiscordIpc();
-  add(Boolean(ipc), "Discord IPC", ipc ?? `not found (expected ${discordSocketHint()})`);
+  add(Boolean(ipc), "Discord IPC", ipc ?? `not found. Expected ${discordSocketHint()}`);
 
   const t3Home = resolveT3Home(options);
   add(existsSync(t3Home), "T3 Code home", t3Home, true);
@@ -504,7 +504,7 @@ function cmdDoctor(flags: Flags): void {
     "T3 Code server",
     snapshot.server.running
       ? `pid ${snapshot.server.pid}, ${snapshot.server.version ?? "unknown version"}`
-      : "not running (presence will stay hidden)",
+      : "not running. The presence stays hidden.",
   );
   add(
     snapshot.available,
@@ -528,7 +528,7 @@ function cmdDoctor(flags: Flags): void {
   add(
     service.installed,
     "Login service",
-    service.installed ? (service.path ?? "installed") : "not installed (run `rich-t3code install`)",
+    service.installed ? (service.path ?? "installed") : "not installed. Run `rich-t3code install`.",
   );
 
   if (flags.json) {

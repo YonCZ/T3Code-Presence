@@ -28,8 +28,8 @@ export interface PresenceClientOptions {
 
 /**
  * One Discord IPC connection, with backoff and a small rate limiter.
- * Discord only shows one activity per app per user, so the daemon owns this
- * for the whole machine.
+ * Discord only shows one activity per app per user, so the daemon uses this
+ * connection for the whole machine.
  */
 export class PresenceClient {
   private readonly clientId: string;
