@@ -40,6 +40,7 @@
     "dist",
     "README.md",
     "AGENT_INSTALL.md",
+    "install.sh",
     "LICENSE"
   ],
   "publishConfig": {

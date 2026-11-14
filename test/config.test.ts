@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { loadConfig, resolveT3Home, writeDefaultConfig } from "../src/config.js";
-import { resolveOptions } from "../src/options.js";
+import { SHARED_CLIENT_ID, resolveOptions } from "../src/options.js";
 
 test("loads a config file and lets CLI overrides win", () => {
   const home = mkdtempSync(join(tmpdir(), "rich-t3code-config-"));
@@ -46,7 +46,7 @@ test("missing explicit config is an error, missing default is fine", () => {
   );
   const loaded = loadConfig({ env: { XDG_CONFIG_HOME: "/tmp/rich-t3code-none" } });
   assert.equal(loaded.exists, false);
-  assert.equal(loaded.options.clientId, "");
+  assert.equal(loaded.options.clientId, SHARED_CLIENT_ID);
 });
 
 test("writes a default config once and with force", () => {
@@ -64,6 +64,10 @@ test("writes a default config once and with force", () => {
     const forced = writeDefaultConfig("456", path, true);
     assert.equal(forced.created, true);
     assert.equal(JSON.parse(readFileSync(path, "utf8")).clientId, "456");
+
+    const shared = writeDefaultConfig("", path, true);
+    assert.equal(shared.created, true);
+    assert.equal(JSON.parse(readFileSync(path, "utf8")).clientId, SHARED_CLIENT_ID);
   } finally {
     rmSync(home, { recursive: true, force: true });
   }

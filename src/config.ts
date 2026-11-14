@@ -1,7 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, isAbsolute, join, resolve } from "node:path";
-import { DEFAULT_OPTIONS, resolveOptions, type RichOptions } from "./options.js";
+import {
+  DEFAULT_OPTIONS,
+  SHARED_CLIENT_ID,
+  resolveOptions,
+  type RichOptions,
+} from "./options.js";
 
 export class ConfigError extends Error {
   override name = "ConfigError";
@@ -123,7 +128,12 @@ export function writeDefaultConfig(
   const target = resolve(expandHome(path));
   if (existsSync(target) && !force) return { path: target, created: false };
   mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, `${JSON.stringify(defaultConfigObject(clientId), null, 2)}\n`, "utf8");
+  const resolvedClientId = clientId.trim().length > 0 ? clientId.trim() : SHARED_CLIENT_ID;
+  writeFileSync(
+    target,
+    `${JSON.stringify(defaultConfigObject(resolvedClientId), null, 2)}\n`,
+    "utf8",
+  );
   return { path: target, created: true };
 }
 

@@ -1,6 +1,8 @@
-# Install Rich T3 Code with an agent
+# Install T3 Code Presence with an agent
 
-This file is written for an AI coding agent. Follow the steps in order. Do not modify T3 Code or its database. If a step needs a value only the user can provide (the Discord Application ID), stop and ask for it.
+This file is written for an AI coding agent. If the user says **“install T3 Code Presence for me”**, follow the quick path. Do not modify T3 Code or its database.
+
+The plugin ships with a shared Discord application, so **you do not need to ask the user for a Discord Application ID**. Only ask if they explicitly want a custom app name or icon (see step 5).
 
 ## 1. Check the machine
 
@@ -10,74 +12,87 @@ uname -s                 # Darwin, Linux, or Windows
 test -d "$HOME/.t3" && echo "T3 home found" || echo "T3 home missing"
 ```
 
-The T3 Code data directory is `$T3CODE_HOME` if set, otherwise `~/.t3`. The presence database is `<T3 home>/userdata/statev2.sqlite`.
-
 If Node is older than 20.11, install a newer Node before continuing.
 
-## 2. Ask for the Discord Application ID
+The T3 Code data directory is `$T3CODE_HOME` if set, otherwise `~/.t3`. The presence database is `<T3 home>/userdata/statev2.sqlite`.
 
-The application name appears as the "Playing …" headline. Ask the user to:
+## 2. One-command install (macOS and Linux)
 
-1. Open <https://discord.com/developers/applications>.
-2. Create an application named **T3 Code** (or whatever headline they want).
-3. Copy the Application ID.
-4. Optional: in **Rich Presence → Art Assets**, upload `assets/t3code-icon.png` with the asset key `logo`. The default config already uses the T3 icon through an image proxy, so this is only for an app-owned asset.
+```bash
+curl -fsSL https://raw.githubusercontent.com/YonCZ/T3Code-Presence/main/install.sh | bash
+```
 
-Do not use an id from another project. Do not invent one.
+This script is non-interactive. It:
 
-## 3. Install from source
+- clones the repo into `~/.local/share/t3code-presence` (or updates it)
+- installs dependencies and builds
+- links `~/.local/bin/rich-t3code`
+- installs the launchd agent (macOS) or systemd user unit (Linux)
+- starts the daemon
+
+No Discord developer setup is needed. The shared app is named **T3 Code** and uses the repo icon.
+
+If `curl | bash` is not acceptable, download and run the script instead:
+
+```bash
+curl -fsSL -o /tmp/install-t3code-presence.sh https://raw.githubusercontent.com/YonCZ/T3Code-Presence/main/install.sh
+bash /tmp/install-t3code-presence.sh
+```
+
+## 3. Manual install (Windows or if the script fails)
 
 ```bash
 git clone https://github.com/YonCZ/T3Code-Presence.git
-cd rich-t3code
+cd T3Code-Presence
 npm install
 npm run build
+node dist/cli.js install     # macOS/Linux only
 ```
 
-## 4. Write the config
+On Windows, `install` is unavailable. Run `node dist/cli.js start` at login with Task Scheduler. The daemon can run in the foreground for a quick test.
 
-Replace `<APPLICATION_ID>` with the id from step 2:
+## 4. Verify
 
 ```bash
-node dist/cli.js init --client-id <APPLICATION_ID>
+~/.local/share/t3code-presence/dist/cli.js status
+~/.local/share/t3code-presence/dist/cli.js doctor
 ```
 
-The file is `~/.config/rich-t3code/config.json`. The default first line is `["thread"]`; the second is `["modelNameVariant", "status"]`. If the user does not want their work visible, set `"details": ["status"]` and keep `state`. If they want a different layout, edit `details` and `state` using the field names in the README. Keep `clientId`.
+If `~/.local/bin` is on `PATH`, `rich-t3code status` works too.
 
-## 5. Verify
+Expected:
+
+- `T3 server running` — T3 Code is open, or its background service is running.
+- `T3 Code database` — readable.
+- `Discord IPC` — a socket is found. Ask the user to open the Discord desktop app if it is missing.
+- `Discord app id` — passes with the shared app.
+- `Card` — renders a line like `Thread title | Model (variant) · Working`.
+
+If T3 Code has never run on this machine, ask the user to open it once so the database exists, then run `status` again.
+
+Optional live check:
 
 ```bash
-node dist/cli.js status
-node dist/cli.js doctor
+~/.local/share/t3code-presence/dist/cli.js preview --seconds 10
 ```
 
-Expected: `T3 server running`, the database path is readable, the `Discord app id` check passes, and the `Discord IPC` check finds a socket. A `WARN` for the login service is normal before step 6.
+## 5. Custom Discord app (only if the user asks)
 
-If T3 Code is closed, start it once so the server creates its state database, then run `status` again.
+The shared app is enough for normal use. If the user wants their own headline or icon:
 
-## 6. Show the card for a few seconds
+1. Open <https://discord.com/developers/applications>.
+2. Create an application named **T3 Code** (or their preferred name).
+3. Copy the Application ID.
+4. Optional: in **Rich Presence → Art Assets**, upload [`assets/t3code-icon.png`](assets/t3code-icon.png) with the asset key `logo`.
+5. Run:
 
 ```bash
-node dist/cli.js preview --seconds 10
+~/.local/share/t3code-presence/dist/cli.js init --force --client-id <APPLICATION_ID>
 ```
 
-If it fails, Discord is not running or the IPC socket is in an unexpected place. Ask the user to start the Discord desktop app. Discord in a browser will not work.
+Or set `clientId` in `~/.config/rich-t3code/config.json`.
 
-## 7. Run at login
-
-```bash
-node dist/cli.js install
-```
-
-macOS uses a LaunchAgent at `~/Library/LaunchAgents/com.yoncz.rich-t3code.plist`; Linux uses a systemd user unit. The service runs:
-
-```text
-<node> <repo>/dist/cli.js start --config ~/.config/rich-t3code/config.json
-```
-
-Logs go to `~/.local/state/rich-t3code/`.
-
-Check it:
+## 6. Service checks
 
 ```bash
 # macOS
@@ -87,20 +102,26 @@ launchctl print gui/$(id -u)/com.yoncz.rich-t3code | head -20
 systemctl --user status rich-t3code
 ```
 
-On Windows, `install` is not available. Add `rich-t3code start` to Task Scheduler at login instead.
+Logs:
 
-## 8. Handle the common failures
+```text
+~/.local/state/rich-t3code/rich-t3code.log
+~/.local/state/rich-t3code/rich-t3code.err.log
+```
 
-- `Discord app id: not set` — run `init --client-id` again or set `RICH_T3CODE_CLIENT_ID`.
-- `Discord IPC: not found` — the Discord desktop app is not running. The daemon retries, but nothing appears until the socket exists.
-- `T3 Code database: ... not found` — T3 Code has never started on this machine, or `T3CODE_HOME` points at the wrong directory.
+## 7. Common failures
+
+- `Discord IPC: not found` — the Discord desktop app is not running. The daemon retries; nothing appears until the socket exists. Discord in a browser will not work.
+- `T3 Code database: ... not found` — T3 Code has never started, or `T3CODE_HOME` points at the wrong directory.
 - `Could not read T3 Code state: no such column` — T3 Code changed its schema. Run `doctor`, collect the error, and report it; do not patch T3 Code's database.
+- `Another rich-t3code instance is already running` — the previous daemon is still alive. Check `pgrep -fl "dist/cli.js start"`; do not delete the lock while that process exists.
 - The card stays `Idle` while agents run — the followed thread is the one open in the window. Add `agents` to `state`, or set `followFocusedThread` to `false`.
-- Two daemons — the second exits with a lock error. Remove the stale lock at `~/.local/state/rich-t3code/rich-t3code.lock` only after checking that no `rich-t3code start` process is alive.
+- The service is installed but nothing appears — check `rich-t3code.log` for `discord.login.failed`; the daemon retries when Discord starts.
 
 ## Rules
 
 - Never write to `<T3 home>/userdata/statev2.sqlite`.
 - Never modify files inside the T3 Code application bundle.
-- Do not add a `clientId` that belongs to an unrelated Discord application.
+- Do not ask for a Discord Application ID unless the user wants a custom app.
+- The shared Application ID is public and safe to publish. Never ask for or publish a **client secret** or **bot token**.
 - Keep changes to the user's config minimal and show them the diff.

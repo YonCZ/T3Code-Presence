@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { DEFAULT_OPTIONS, resolveOptions } from "../src/options.js";
+import { DEFAULT_OPTIONS, SHARED_CLIENT_ID, resolveOptions } from "../src/options.js";
 
 test("defaults are stable", () => {
   const options = resolveOptions({});
@@ -9,7 +9,7 @@ test("defaults are stable", () => {
   assert.equal(options.separator, " \u00b7 ");
   assert.equal(options.timer.source, "activity");
   assert.equal(options.followFocusedThread, true);
-  assert.equal(options.clientId, "");
+  assert.equal(options.clientId, SHARED_CLIENT_ID);
   assert.match(options.largeImage.key, /t3code-icon\.png/);
 });
 

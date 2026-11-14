@@ -29,47 +29,58 @@ This is an independent project. It is not a fork of T3 Code, or of any other pre
 - Node.js 20.11 or newer.
 - In Discord: **User Settings → Activity Privacy → Display current activity as a status message**.
 
-## Create the Discord application
-
-The Discord application name is the "Playing …" headline, so make it say **T3 Code**.
-
-1. Open [discord.com/developers/applications](https://discord.com/developers/applications) and create an application.
-2. Copy the **Application ID**.
-3. Optional: open **Rich Presence → Art Assets** and upload [`assets/t3code-icon.png`](assets/t3code-icon.png) with the asset key `logo` if you want an app-owned image. The default config already uses the T3 Code icon from this repo through an image proxy, so the card has the mark without uploading anything.
-4. Optional: upload provider icons and map them under `smallImage.providerIcons`, or leave it empty and let the daemon use [models.dev](https://models.dev) logos through an image proxy.
-
-Then write the config:
-
-```bash
-rich-t3code init --client-id <application-id>
-```
-
 ## Install
 
-From source:
+macOS and Linux, one command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/YonCZ/T3Code-Presence/main/install.sh | bash
+```
+
+The script clones into `~/.local/share/t3code-presence`, builds it, links `~/.local/bin/rich-t3code`, installs the login service, and starts it. **No Discord setup is required** — the plugin ships with the project’s shared T3 Code Discord application.
+
+Then check it:
+
+```bash
+rich-t3code status
+```
+
+If `~/.local/bin` is not on your `PATH`, use the full path:
+
+```bash
+~/.local/share/t3code-presence/dist/cli.js status
+```
+
+From source instead:
 
 ```bash
 git clone https://github.com/YonCZ/T3Code-Presence.git
-cd rich-t3code
+cd T3Code-Presence
 npm install
 npm run build
-node dist/cli.js init --client-id <application-id>
-node dist/cli.js status
-node dist/cli.js start
+node dist/cli.js install
 ```
 
-`start` runs in the foreground and reconnects to Discord with backoff. To keep it running at login:
+`start` runs in the foreground; `install` keeps it running at login (launchd on macOS, systemd user unit on Linux). Logs and state live in `~/.local/state/rich-t3code/`.
+
+The login service points at the checkout and the Node binary that installed it. Keep the folder where it is; if you move it or switch Node versions, run `install` again.
+
+With an AI agent, point it at [AGENT_INSTALL.md](AGENT_INSTALL.md) or say **“install T3 Code Presence for me”**.
+
+## Custom Discord application (optional)
+
+The built-in shared app is named **T3 Code** and uses the icon in this repo, so most people never need this section. Create your own app if you want a different headline, a different icon, or independent control:
+
+1. Open [discord.com/developers/applications](https://discord.com/developers/applications) and create an application.
+2. Copy the **Application ID**.
+3. Optional: open **Rich Presence → Art Assets** and upload [`assets/t3code-icon.png`](assets/t3code-icon.png) with the asset key `logo`.
+4. Point the config at it:
 
 ```bash
-node dist/cli.js install     # launchd on macOS, systemd user unit on Linux
-node dist/cli.js uninstall
+rich-t3code init --force --client-id <application-id>
 ```
 
-On macOS, approve the background item if the system asks. The service writes its stdout and stderr to `~/.local/state/rich-t3code/`.
-
-The login service points at this checkout and the Node binary that installed it. Keep the folder where it is; if you move it or switch Node versions, run `install` again.
-
-With an AI agent: point it at [AGENT_INSTALL.md](AGENT_INSTALL.md).
+Or set `clientId` in `~/.config/rich-t3code/config.json`. If you upload provider icons, map them under `smallImage.providerIcons`; otherwise the daemon uses [models.dev](https://models.dev) logos through an image proxy.
 
 ## Configuration
 
@@ -77,7 +88,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 
 ```jsonc
 {
-  "clientId": "123456789012345678",
+  "clientId": "1570933832012791858", // shared app; replace with your own
   "details": ["thread"],
   "state": ["modelNameVariant", "status"],
   "separator": " · ",
@@ -122,7 +133,7 @@ The config file lives at `~/.config/rich-t3code/config.json` (or `$XDG_CONFIG_HO
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `clientId` | — | Discord Application ID (required) |
+| `clientId` | shared T3 Code app | Discord Application ID; override for a custom name or icon |
 | `details` | `["thread"]` | fields on the first line |
 | `state` | `["modelNameVariant", "status"]` | fields on the second line |
 | `separator` | `" · "` | joins non-empty fields |
@@ -241,7 +252,7 @@ The reader targets T3 Code 0.1's orchestration v2 tables. It checks for the tabl
 
 **The card does not appear.**
 - Is the Discord desktop app running? Check `rich-t3code status` for the IPC socket.
-- Is `clientId` set? `rich-t3code doctor` marks it as FAIL when missing.
+- Is `clientId` valid? The shared default works out of the box; a custom app must match the Application ID you copied.
 - In Discord, enable **Activity Privacy → Display current activity as a status message**.
 - If you use a custom Discord app, the daemon does not need to be restarted after uploading assets, but Discord may cache the old card. Clear it by restarting Discord.
 

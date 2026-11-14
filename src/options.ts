@@ -123,8 +123,11 @@ export const DEFAULT_PROMPTING_APPS = [
 export const T3CODE_ICON_URL =
   "https://images.weserv.nl/?url=raw.githubusercontent.com/YonCZ/T3Code-Presence/main/assets/t3code-icon.png&output=png&w=512&h=512";
 
+/** Shared Discord application so the plugin works without per-user setup. */
+export const SHARED_CLIENT_ID = "1570933832012791858";
+
 export const DEFAULT_OPTIONS: RichOptions = {
-  clientId: "",
+  clientId: SHARED_CLIENT_ID,
   details: ["thread"],
   state: ["modelNameVariant", "status"],
   separator: " \u00b7 ",
@@ -202,7 +205,10 @@ export function resolveOptions(raw: unknown): RichOptions {
   const smallImage = isRecord(input.smallImage) ? input.smallImage : {};
 
   const resolved: RichOptions = {
-    clientId: typeof input.clientId === "string" ? input.clientId.trim() : "",
+    clientId:
+      typeof input.clientId === "string" && input.clientId.trim().length > 0
+        ? input.clientId.trim()
+        : SHARED_CLIENT_ID,
     details: fields(input.details, DEFAULT_OPTIONS.details),
     state: fields(input.state, DEFAULT_OPTIONS.state),
     separator: str(input.separator, DEFAULT_OPTIONS.separator),
